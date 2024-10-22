@@ -1,8 +1,9 @@
 Movies Catalog
 
 
- - [] Implementar CRUD de usuário
- - [] Implementar CRUD de filme
+ - [x] Implementar CRUD de usuário
+ - [x] Implementar CRUD de filme
+ - [] Implementar CRUD de rating
  - [] Implementar autenticação com JWT
  - [] Implementar Guard de JWT
  - [] Criar as entidades (Usuário e Filme)
