@@ -55,6 +55,8 @@ export class MoviesController {
     return await this.moviesService.findOne(id);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleEnum.ADMIN)
   @Patch(':id')
   async update(
     @Param('id') id: string,

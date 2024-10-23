@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { MovieEntity } from './movie.entity';
 import { UserEntity } from './user.entity';
 
@@ -13,8 +19,10 @@ export class RatingEntity {
   @ManyToOne(() => MovieEntity, (movie) => movie.ratings, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'movie_id' })
   movie: MovieEntity;
 
   @ManyToOne(() => UserEntity, (user) => user.ratings, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 }

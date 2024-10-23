@@ -28,11 +28,15 @@ export class UsersController {
     return await this.userService.create(createUserDto);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleEnum.ADMIN)
   @Get()
   async findAll() {
     return await this.userService.findAll();
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleEnum.ADMIN)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<UserDto> {
     return await this.userService.findOne(id);
