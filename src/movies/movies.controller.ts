@@ -9,6 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { Roles } from 'src/roles/roles.decorator';
+import { RolesGuard } from 'src/roles/roles.guard';
+import { UserRoleEnum } from 'src/roles/userRole.interface';
 import { CreateMovieDto, MovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { MoviesService } from './movies.service';
@@ -18,6 +21,8 @@ import { MoviesService } from './movies.service';
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleEnum.ADMIN)
   @Post()
   create(@Body() createMovieDto: CreateMovieDto) {
     return this.moviesService.create(createMovieDto);
