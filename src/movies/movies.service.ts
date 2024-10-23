@@ -42,8 +42,24 @@ export class MoviesService {
   }
 
   async findAll(): Promise<MovieDto[]> {
-    const movies = await this.moviesRepository.find();
-    return plainToInstance(MovieDto, movies);
+    const movies = await this.moviesRepository.find({ relations: ['ratings'] });
+    return movies.map((movie) => {
+      const ratings = movie.ratings || [];
+
+      const averageRating = ratings.length
+        ? ratings.reduce((acc, rating) => acc + Number(rating.rating), 0) /
+          ratings.length
+        : 0;
+
+      return {
+        id: movie.id,
+        title: movie.title,
+        director: movie.director,
+        gender: movie.gender,
+        actors: movie.actors,
+        rating: parseFloat(averageRating.toFixed(1)),
+      } as MovieDto;
+    });
   }
 
   async findOne(id: string): Promise<MovieDto> {

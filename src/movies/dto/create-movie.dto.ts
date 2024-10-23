@@ -10,7 +10,6 @@ export class CreateMovieDto {
   @IsString()
   @IsNotEmpty()
   gender: string;
-  @IsString()
   @IsNotEmpty()
   @IsArray()
   actors: string[];

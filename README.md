@@ -11,7 +11,7 @@ Movies Catalog
  - [X] Configuração de Docker
  - [X] Configuração de DB
  - [X] Refatoração dos serviços para usar o DB
- - [] Implementação de lógica de negócio
+ - [X] Implementação de lógica de negócio
  - [] Conexão com API externa (TMDB ou OMDB)
  - [] Testes de autenticação
  - [] Testes de gestão de usuário
