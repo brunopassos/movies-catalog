@@ -7,11 +7,10 @@ Movies Catalog
  - [X] Implementar autenticação com JWT
  - [X] Implementar Guard de JWT
  - [X] Implementar Guard de Role
- - [] Criar as entidades (Usuário, Filme e Avaliações)
- - [] Configuração de Docker
- - [] Configuração de DB
+ - [X] Criar as entidades (Usuário, Filme e Avaliações)
+ - [X] Configuração de Docker
+ - [X] Configuração de DB
  - [] Refatoração dos serviços para usar o DB
- - [] Implementar decorator de roles e rolesguard
  - [] Conexão com API externa (TMDB ou OMDB)
  - [] Testes de autenticação
  - [] Testes de gestão de usuário
