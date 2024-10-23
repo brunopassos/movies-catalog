@@ -1,17 +1,38 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { plainToInstance } from 'class-transformer';
+import { MovieEntity } from 'src/db/entities/movie.entity';
+import { RatingEntity } from 'src/db/entities/rating.entity';
+import { UserEntity } from 'src/db/entities/user.entity';
+import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { CreateRatingDto, RatingDto } from './dto/create-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
 
 @Injectable()
 export class RatingsService {
-  private readonly ratings: RatingDto[] = [];
-  create(createRatingDto: CreateRatingDto): RatingDto {
-    const ratingAlreadyExists = this.ratings.find(
-      (rating) =>
-        rating.userId === createRatingDto.userId &&
-        rating.movieId === createRatingDto.movieId,
-    );
+  constructor(
+    @InjectRepository(RatingEntity)
+    private readonly ratingsRepository: Repository<RatingEntity>,
+
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+
+    @InjectRepository(MovieEntity)
+    private readonly movieRepository: Repository<MovieEntity>,
+  ) {}
+  async create(createRatingDto: CreateRatingDto): Promise<RatingDto> {
+    const userFound = await this.userRepository.findOne({
+      where: { id: createRatingDto.userId },
+    });
+
+    const movieFound = await this.movieRepository.findOne({
+      where: { id: createRatingDto.movieId },
+    });
+
+    const ratingAlreadyExists = await this.ratingsRepository.findOne({
+      where: { user: userFound, movie: movieFound },
+    });
 
     if (ratingAlreadyExists) {
       throw new HttpException(
@@ -20,34 +41,42 @@ export class RatingsService {
       );
     }
 
-    const newRating: RatingDto = {
-      id: uuid(),
-      ...createRatingDto,
-    };
+    const dbRating = new RatingEntity();
 
-    this.ratings.push(newRating);
+    dbRating.id = uuid();
+    dbRating.rating = createRatingDto.rating;
+    dbRating.movie = movieFound;
+    dbRating.user = userFound;
 
-    return newRating;
+    const { id, movie, rating, user } =
+      await this.ratingsRepository.save(dbRating);
+
+    return plainToInstance(RatingDto, { id, movie, rating, user });
   }
 
-  update(id: string, updateRatingDto: UpdateRatingDto): RatingDto {
-    const ratingIndex = this.ratings.findIndex((rating) => rating.id === id);
+  async update(
+    id: string,
+    updateRatingDto: UpdateRatingDto,
+  ): Promise<RatingDto> {
+    const rating = await this.ratingsRepository.findOne({
+      where: { id },
+    });
 
-    if (ratingIndex < 0) {
+    if (!rating) {
       throw new HttpException('Rating not found.', HttpStatus.NOT_FOUND);
     }
 
-    const userUpdated: RatingDto = {
-      id: this.ratings[ratingIndex].id,
-      rating: updateRatingDto.rating
-        ? updateRatingDto.rating
-        : this.ratings[ratingIndex].rating,
-      userId: this.ratings[ratingIndex].userId,
-      movieId: this.ratings[ratingIndex].movieId,
-    };
+    const dbRating = new RatingEntity();
 
-    this.ratings.splice(ratingIndex, 1, userUpdated);
+    dbRating.id = rating.id;
+    dbRating.rating = updateRatingDto.rating
+      ? updateRatingDto.rating
+      : rating.rating;
+    dbRating.movie = rating.movie;
+    dbRating.user = rating.user;
 
-    return userUpdated;
+    await this.ratingsRepository.update(dbRating.id, dbRating);
+
+    return plainToInstance(RatingDto, dbRating);
   }
 }

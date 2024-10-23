@@ -1,49 +1,57 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { hashSync as bcryptHashSync } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
+import { UserEntity } from 'src/db/entities/user.entity';
+import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
-import { CreateUserDto, UserDto } from './dto/create-user.dto';
+import { CreateUserDto, UserDto, UserLoginDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  private readonly users: UserDto[] = [
-    {
-      id: '29868cc6-c776-415d-9160-eb5b4fa437d3',
-      isActive: true,
-      password: '$2b$10$CyhBm5S8tBHx.cEBXkLrkuoetE3gDd0kuigd5prWwcxZn/3egNfLO',
-      role: 'admin',
-      username: 'bruno',
-    },
-  ];
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly usersRepository: Repository<UserEntity>,
+  ) {}
 
-  create(createUserDto: CreateUserDto): UserDto {
-    const userAlreadyExists = this.users.find(
-      (user) => user.username === createUserDto.username,
-    );
+  async create(createUserDto: CreateUserDto): Promise<UserDto> {
+    const userAlreadyExists = await this.usersRepository.findOne({
+      where: { username: createUserDto.username },
+    });
 
     if (userAlreadyExists) {
-      throw new HttpException(`User already exists.`, HttpStatus.BAD_REQUEST);
+      throw new ConflictException(`User already exists.`);
     }
 
-    const newUser: UserDto = {
-      id: uuid(),
-      ...createUserDto,
-      password: bcryptHashSync(createUserDto.password, 10),
-      isActive: true,
-    };
+    const dbUser = new UserEntity();
 
-    this.users.push(newUser);
+    dbUser.id = uuid();
+    dbUser.username = createUserDto.username;
+    dbUser.password = bcryptHashSync(createUserDto.password, 10);
+    dbUser.role = createUserDto.role;
 
-    return plainToInstance(UserDto, newUser);
+    const { id, username, role, isActive, password } =
+      await this.usersRepository.save(dbUser);
+
+    return plainToInstance(UserDto, { id, username, role, isActive, password });
   }
 
-  findAll(): UserDto[] {
-    return plainToInstance(UserDto, this.users);
+  async findAll(): Promise<UserDto[]> {
+    const users = await this.usersRepository.find();
+
+    return plainToInstance(UserDto, users);
   }
 
-  findOne(id: string): UserDto {
-    const user = this.users.find((user) => user.id === id);
+  async findOne(id: string): Promise<UserDto> {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+    });
 
     if (!user) {
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
@@ -52,52 +60,59 @@ export class UsersService {
     return plainToInstance(UserDto, user);
   }
 
-  findByUsername(username: string): UserDto | null {
-    return this.users.find((user) => user.username === username);
+  async findByUsername(username: string): Promise<UserLoginDto | null> {
+    const userFound = await this.usersRepository.findOne({
+      where: { username },
+    });
+
+    if (!userFound) {
+      null;
+    }
+
+    return {
+      id: userFound.id,
+      username: userFound.username,
+      role: userFound.role,
+      password: userFound.password,
+    };
   }
 
-  update(id: string, updateUserDto: UpdateUserDto): UserDto {
-    const userIndex = this.users.findIndex((user) => user.id === id);
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserDto> {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+    });
 
-    if (userIndex < 0) {
+    if (user) {
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
     }
 
-    const userUpdated: UserDto = {
-      id: this.users[userIndex].id,
-      username: updateUserDto.username
-        ? updateUserDto.username
-        : this.users[userIndex].username,
-      password: updateUserDto.password
-        ? updateUserDto.password
-        : bcryptHashSync(this.users[userIndex].password, 10),
-      role: updateUserDto.role
-        ? updateUserDto.role
-        : this.users[userIndex].role,
-      isActive: updateUserDto.isActive
-        ? updateUserDto.isActive
-        : this.users[userIndex].isActive,
-    };
+    const dbUser = new UserEntity();
 
-    this.users.splice(userIndex, 1, userUpdated);
+    dbUser.id = user.id;
+    dbUser.username = updateUserDto.username
+      ? updateUserDto.username
+      : user.username;
+    dbUser.password = updateUserDto.password
+      ? bcryptHashSync(updateUserDto.password, 10)
+      : user.password;
+    dbUser.role = updateUserDto.role ? updateUserDto.role : user.role;
+    dbUser.isActive = user.isActive;
+    dbUser.ratings = dbUser.ratings;
 
-    return plainToInstance(UserDto, userUpdated);
+    await this.usersRepository.update(dbUser.id, dbUser);
+
+    return plainToInstance(UserDto, dbUser);
   }
 
-  remove(id: string): UserDto {
-    const userIndex = this.users.findIndex((user) => user.id === id);
+  async remove(id: string): Promise<void> {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+    });
 
-    if (userIndex < 0) {
+    if (user) {
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
     }
 
-    const userInactive: UserDto = {
-      ...this.users[userIndex],
-      isActive: false,
-    };
-
-    this.users.splice(userIndex, 1, userInactive);
-
-    return plainToInstance(UserDto, userInactive);
+    await this.usersRepository.delete(id);
   }
 }

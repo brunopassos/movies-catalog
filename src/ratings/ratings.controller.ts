@@ -10,7 +10,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { Roles } from 'src/roles/roles.decorator';
 import { RolesGuard } from 'src/roles/roles.guard';
 import { UserRoleEnum } from 'src/roles/userRole.interface';
-import { CreateRatingDto } from './dto/create-rating.dto';
+import { CreateRatingDto, RatingDto } from './dto/create-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
 import { RatingsService } from './ratings.service';
 
@@ -22,12 +22,15 @@ export class RatingsController {
   @UseGuards(RolesGuard)
   @Roles(UserRoleEnum.USER)
   @Post()
-  create(@Body() createRatingDto: CreateRatingDto) {
-    return this.ratingsService.create(createRatingDto);
+  async create(@Body() createRatingDto: CreateRatingDto): Promise<RatingDto> {
+    return await this.ratingsService.create(createRatingDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRatingDto: UpdateRatingDto) {
-    return this.ratingsService.update(id, updateRatingDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateRatingDto: UpdateRatingDto,
+  ): Promise<RatingDto> {
+    return await this.ratingsService.update(id, updateRatingDto);
   }
 }

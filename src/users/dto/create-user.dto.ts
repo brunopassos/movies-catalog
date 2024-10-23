@@ -1,3 +1,4 @@
+import { PartialType } from '@nestjs/mapped-types';
 import { Exclude } from 'class-transformer';
 import {
   IsBoolean,
@@ -7,6 +8,7 @@ import {
   Matches,
   MinLength,
 } from 'class-validator';
+import { UserRoleEnum } from 'src/roles/userRole.interface';
 
 export class CreateUserDto {
   @IsString()
@@ -28,7 +30,7 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty({ message: 'Role cant be empty.' })
   @IsIn(['admin', 'user'], { message: 'This role do not exists.' })
-  role: 'admin' | 'user';
+  role: UserRoleEnum;
 }
 
 export class UserDto {
@@ -45,9 +47,11 @@ export class UserDto {
 
   @IsString()
   @IsNotEmpty()
-  role: string;
+  role: UserRoleEnum;
 
   @IsBoolean()
   @IsNotEmpty()
   isActive: boolean;
 }
+
+export class UserLoginDto extends PartialType(UserDto) {}
