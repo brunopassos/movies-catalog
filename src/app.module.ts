@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { MoviesModule } from './movies/movies.module';
 import { RatingsModule } from './ratings/ratings.module';
 import { UsersModule } from './users/users.module';
+import { DbModule } from './db/db.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UsersModule } from './users/users.module';
     RatingsModule,
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    DbModule,
   ],
   controllers: [AppController],
   providers: [AppService],
