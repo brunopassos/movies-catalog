@@ -44,6 +44,10 @@ export class UsersService {
     return plainToInstance(UserDto, user);
   }
 
+  findByUsername(username: string): UserDto | null {
+    return this.users.find((user) => user.username === username);
+  }
+
   update(id: string, updateUserDto: UpdateUserDto): UserDto {
     const userIndex = this.users.findIndex((user) => user.id === id);
 
