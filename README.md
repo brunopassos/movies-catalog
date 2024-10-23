@@ -10,7 +10,8 @@ Movies Catalog
  - [X] Criar as entidades (Usuário, Filme e Avaliações)
  - [X] Configuração de Docker
  - [X] Configuração de DB
- - [] Refatoração dos serviços para usar o DB
+ - [X] Refatoração dos serviços para usar o DB
+ - [] Implementação de lógica de negócio
  - [] Conexão com API externa (TMDB ou OMDB)
  - [] Testes de autenticação
  - [] Testes de gestão de usuário

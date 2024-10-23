@@ -21,30 +21,35 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleEnum.ADMIN)
   @Post()
-  create(@Body() createUserDto: CreateUserDto): UserDto {
-    return this.userService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
+    return await this.userService.create(createUserDto);
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async findAll() {
+    return await this.userService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(id);
+  async findOne(@Param('id') id: string): Promise<UserDto> {
+    return await this.userService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<UserDto> {
+    return await this.userService.update(id, updateUserDto);
   }
 
   @UseGuards(RolesGuard)
   @Roles(UserRoleEnum.ADMIN)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
+  async remove(@Param('id') id: string): Promise<void> {
+    await this.userService.remove(id);
   }
 }

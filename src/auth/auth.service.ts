@@ -18,8 +18,8 @@ export class AuthService {
     );
   }
 
-  signIn(username: string, password: string): AuthResponseDto {
-    const foundUser = this.usersService.findByUsername(username);
+  async signIn(username: string, password: string): Promise<AuthResponseDto> {
+    const foundUser = await this.usersService.findByUsername(username);
 
     if (!foundUser || !bcryptCompareSync(password, foundUser.password)) {
       throw new UnauthorizedException();

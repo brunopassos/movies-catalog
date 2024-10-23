@@ -24,17 +24,17 @@ export class MoviesController {
   @UseGuards(RolesGuard)
   @Roles(UserRoleEnum.ADMIN)
   @Post()
-  create(@Body() createMovieDto: CreateMovieDto) {
-    return this.moviesService.create(createMovieDto);
+  async create(@Body() createMovieDto: CreateMovieDto): Promise<MovieDto> {
+    return await this.moviesService.create(createMovieDto);
   }
 
   @Get('filter')
-  findWithFilters(
+  async findWithFilters(
     @Query('title') title?: string,
     @Query('director') director?: string,
     @Query('gender') gender?: string,
     @Query('actors') actors?: string[],
-  ): MovieDto[] {
+  ): Promise<MovieDto[]> {
     const filters: Partial<MovieDto> = {
       title,
       director,
@@ -42,21 +42,24 @@ export class MoviesController {
       actors: Array.isArray(actors) ? actors : actors ? [actors] : [],
     };
 
-    return this.moviesService.findWithFilters(filters);
+    return await this.moviesService.findWithFilters(filters);
   }
 
   @Get()
-  findAll() {
-    return this.moviesService.findAll();
+  async findAll(): Promise<MovieDto[]> {
+    return await this.moviesService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.moviesService.findOne(id);
+  async findOne(@Param('id') id: string): Promise<MovieDto> {
+    return await this.moviesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMovieDto: UpdateMovieDto) {
-    return this.moviesService.update(id, updateMovieDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateMovieDto: UpdateMovieDto,
+  ): Promise<MovieDto> {
+    return await this.moviesService.update(id, updateMovieDto);
   }
 }

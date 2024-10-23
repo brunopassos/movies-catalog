@@ -21,4 +21,7 @@ export class UserEntity {
 
   @OneToMany(() => RatingEntity, (rating) => rating.user, { cascade: true })
   ratings: RatingEntity[];
+
+  @Column({ type: 'boolean', name: 'isactive' })
+  isActive: boolean;
 }
