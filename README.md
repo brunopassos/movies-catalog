@@ -6,7 +6,7 @@ Movies Catalog
  - [X] Implementar CRUD de rating
  - [X] Implementar autenticação com JWT
  - [X] Implementar Guard de JWT
- - [] Implementar Guard de Role
+ - [X] Implementar Guard de Role
  - [] Criar as entidades (Usuário, Filme e Avaliações)
  - [] Configuração de Docker
  - [] Configuração de DB
