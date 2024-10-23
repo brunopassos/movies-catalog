@@ -7,7 +7,15 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  private readonly users: UserDto[] = [];
+  private readonly users: UserDto[] = [
+    {
+      id: '29868cc6-c776-415d-9160-eb5b4fa437d3',
+      isActive: true,
+      password: '$2b$10$CyhBm5S8tBHx.cEBXkLrkuoetE3gDd0kuigd5prWwcxZn/3egNfLO',
+      role: 'admin',
+      username: 'bruno',
+    },
+  ];
 
   create(createUserDto: CreateUserDto): UserDto {
     const userAlreadyExists = this.users.find(
