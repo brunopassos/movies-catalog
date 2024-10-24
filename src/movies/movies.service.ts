@@ -78,18 +78,20 @@ export class MoviesService {
     const movies = await this.findAll();
 
     return movies.filter((movie) => {
-      return (
+      const titleMatch =
         !filters.title ||
-        (movie.title.toLowerCase().includes(filters.title.toLowerCase()) &&
-          !filters.gender) ||
-        (movie.gender.toLowerCase().includes(filters.gender.toLowerCase()) &&
-          !filters.director) ||
-        (movie.director
-          .toLowerCase()
-          .includes(filters.director.toLowerCase()) &&
-          !filters.actors) ||
-        filters.actors.some((actor) => movie.actors.includes(actor))
-      );
+        movie.title.toLowerCase().includes(filters.title.toLowerCase());
+      const genderMatch =
+        !filters.gender ||
+        movie.gender.toLowerCase().includes(filters.gender.toLowerCase());
+      const directorMatch =
+        !filters.director ||
+        movie.director.toLowerCase().includes(filters.director.toLowerCase());
+      const actorsMatch =
+        !filters.actors ||
+        filters.actors.some((actor) => movie.actors.includes(actor));
+
+      return titleMatch && genderMatch && directorMatch && actorsMatch;
     });
   }
 

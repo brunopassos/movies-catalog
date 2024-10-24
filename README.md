@@ -12,9 +12,10 @@ Movies Catalog
  - [X] Configuração de DB
  - [X] Refatoração dos serviços para usar o DB
  - [X] Implementação de lógica de negócio
- - [] Testes de autenticação
- - [] Testes de gestão de usuário
- - [] Testes de gestão de filme
- - [] Testes de Endpoints da API
+ - [X] Testes de autenticação
+ - [X] Testes de gestão de usuário
+ - [X] Testes de gestão de filme
+ - [X] Testes de gestão de ratings
+ - [X] Testes de Endpoints da API
  - [X] Documentação
  - [] Conexão com API externa (TMDB ou OMDB)

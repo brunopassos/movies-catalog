@@ -82,7 +82,7 @@ export class UsersService {
       where: { id },
     });
 
-    if (user) {
+    if (!user) {
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
     }
 
@@ -109,7 +109,7 @@ export class UsersService {
       where: { id },
     });
 
-    if (user) {
+    if (!user) {
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
     }
 
