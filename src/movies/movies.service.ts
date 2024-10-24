@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
-import { MovieEntity } from 'src/db/entities/movie.entity';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { MovieEntity } from '../db/entities/movie.entity';
 import { CreateMovieDto, MovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 
@@ -78,18 +78,20 @@ export class MoviesService {
     const movies = await this.findAll();
 
     return movies.filter((movie) => {
-      return (
+      const titleMatch =
         !filters.title ||
-        (movie.title.toLowerCase().includes(filters.title.toLowerCase()) &&
-          !filters.gender) ||
-        (movie.gender.toLowerCase().includes(filters.gender.toLowerCase()) &&
-          !filters.director) ||
-        (movie.director
-          .toLowerCase()
-          .includes(filters.director.toLowerCase()) &&
-          !filters.actors) ||
-        filters.actors.some((actor) => movie.actors.includes(actor))
-      );
+        movie.title.toLowerCase().includes(filters.title.toLowerCase());
+      const genderMatch =
+        !filters.gender ||
+        movie.gender.toLowerCase().includes(filters.gender.toLowerCase());
+      const directorMatch =
+        !filters.director ||
+        movie.director.toLowerCase().includes(filters.director.toLowerCase());
+      const actorsMatch =
+        !filters.actors ||
+        filters.actors.some((actor) => movie.actors.includes(actor));
+
+      return titleMatch && genderMatch && directorMatch && actorsMatch;
     });
   }
 

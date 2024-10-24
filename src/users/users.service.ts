@@ -7,9 +7,9 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { hashSync as bcryptHashSync } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
-import { UserEntity } from 'src/db/entities/user.entity';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { UserEntity } from '../db/entities/user.entity';
 import { CreateUserDto, UserDto, UserLoginDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -82,7 +82,7 @@ export class UsersService {
       where: { id },
     });
 
-    if (user) {
+    if (!user) {
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
     }
 
@@ -109,7 +109,7 @@ export class UsersService {
       where: { id },
     });
 
-    if (user) {
+    if (!user) {
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
     }
 
