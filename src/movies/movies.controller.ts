@@ -8,6 +8,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Roles } from 'src/roles/roles.decorator';
 import { RolesGuard } from 'src/roles/roles.guard';
@@ -16,6 +17,7 @@ import { CreateMovieDto, MovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { MoviesService } from './movies.service';
 
+@ApiTags('movies')
 @UseGuards(AuthGuard)
 @Controller('movies')
 export class MoviesController {
