@@ -9,7 +9,7 @@ import {
   Matches,
   MinLength,
 } from 'class-validator';
-import { UserRoleEnum } from 'src/roles/userRole.interface';
+import { UserRoleEnum } from '../../roles/userRole.interface';
 
 export class CreateUserDto {
   @ApiProperty({

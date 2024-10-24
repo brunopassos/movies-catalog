@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
-import { MovieEntity } from 'src/db/entities/movie.entity';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { MovieEntity } from '../db/entities/movie.entity';
 import { CreateMovieDto, MovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 

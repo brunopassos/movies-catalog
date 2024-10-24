@@ -1,5 +1,5 @@
-import { UserRoleEnum } from 'src/roles/userRole.interface';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { UserRoleEnum } from '../../roles/userRole.interface';
 import { RatingEntity } from './rating.entity';
 
 @Entity({ name: 'users' })

@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
-import { MovieEntity } from 'src/db/entities/movie.entity';
-import { RatingEntity } from 'src/db/entities/rating.entity';
-import { UserEntity } from 'src/db/entities/user.entity';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { MovieEntity } from '../db/entities/movie.entity';
+import { RatingEntity } from '../db/entities/rating.entity';
+import { UserEntity } from '../db/entities/user.entity';
 import { CreateRatingDto, RatingDto } from './dto/create-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
 
