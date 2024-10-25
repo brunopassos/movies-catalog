@@ -47,6 +47,7 @@ describe('MoviesService', () => {
         director: 'Christopher Nolan',
         gender: 'Sci-Fi',
         actors: ['Leonardo DiCaprio'],
+        image_url: 'fake_url',
       };
 
       moviesRepository.findOne.mockResolvedValue(null);
@@ -70,6 +71,7 @@ describe('MoviesService', () => {
         director: 'Christopher Nolan',
         gender: 'Sci-Fi',
         actors: ['Leonardo DiCaprio'],
+        image_url: 'fake_url',
       };
 
       moviesRepository.findOne.mockResolvedValue({ title: 'Inception' });
@@ -93,6 +95,7 @@ describe('MoviesService', () => {
           gender: 'Sci-Fi',
           actors: ['Leonardo DiCaprio'],
           rating: 4.0,
+          image_url: 'fake_url',
         },
       ];
 
@@ -104,6 +107,7 @@ describe('MoviesService', () => {
           gender: 'Sci-Fi',
           actors: ['Leonardo DiCaprio'],
           ratings: [{ rating: 4 }, { rating: 4 }],
+          image_url: 'fake_url',
         },
       ];
 
@@ -127,6 +131,7 @@ describe('MoviesService', () => {
         gender: 'Sci-Fi',
         actors: ['Leonardo DiCaprio'],
         rating: 4,
+        image_url: 'fake_url',
       };
 
       moviesRepository.findOne.mockResolvedValue(result);

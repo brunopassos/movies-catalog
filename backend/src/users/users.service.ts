@@ -7,10 +7,10 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { hashSync as bcryptHashSync } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
-import { UserRoleEnum } from 'src/roles/userRole.interface';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { UserEntity } from '../db/entities/user.entity';
+import { UserRoleEnum } from '../roles/userRole.interface';
 import { CreateUserDto, UserDto, UserLoginDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 

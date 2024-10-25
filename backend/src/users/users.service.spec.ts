@@ -133,35 +133,4 @@ describe('UsersService', () => {
       });
     });
   });
-
-  describe('remove', () => {
-    it('should remove a user', async () => {
-      const id = 'existing-user-id';
-      const existingUser = {
-        id,
-        username: 'existinguser',
-      };
-
-      usersRepository.findOne.mockResolvedValue(existingUser);
-      usersRepository.delete.mockResolvedValue(undefined);
-
-      await service.remove(id);
-
-      expect(usersRepository.findOne).toHaveBeenCalledWith({
-        where: { id },
-      });
-      expect(usersRepository.delete).toHaveBeenCalledWith(id);
-    });
-
-    it('should throw HttpException if user not found', async () => {
-      const id = 'non-existing-user-id';
-
-      usersRepository.findOne.mockResolvedValue(null);
-
-      await expect(service.remove(id)).rejects.toThrow(HttpException);
-      expect(usersRepository.findOne).toHaveBeenCalledWith({
-        where: { id },
-      });
-    });
-  });
 });

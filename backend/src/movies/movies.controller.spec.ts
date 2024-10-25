@@ -63,6 +63,7 @@ describe('MoviesController', () => {
         director: 'Peter Jackson',
         gender: 'Fantasia',
         actors: ['Elijah Wood', 'Ian McKellen', 'Sean Astin'],
+        image_url: 'fake_url',
       };
       const expectedMovieDto: MovieDto = {
         id: '1',
@@ -94,6 +95,7 @@ describe('MoviesController', () => {
           gender: 'Sci-Fi',
           actors: ['DiCaprio'],
           rating: 8.8,
+          image_url: 'fake_url',
         },
       ];
 
@@ -120,6 +122,7 @@ describe('MoviesController', () => {
           gender: 'Sci-Fi',
           actors: ['DiCaprio'],
           rating: 8.8,
+          image_url: 'fake_url',
         },
         {
           id: '2',
@@ -128,6 +131,7 @@ describe('MoviesController', () => {
           gender: 'Drama',
           actors: ['DiCaprio', 'Winslet'],
           rating: 7.8,
+          image_url: 'fake_url',
         },
       ];
 
@@ -149,6 +153,7 @@ describe('MoviesController', () => {
         gender: 'Sci-Fi',
         actors: ['DiCaprio'],
         rating: 8.8,
+        image_url: 'fake_url',
       };
 
       jest.spyOn(service, 'findOne').mockResolvedValue(expectedMovieDto);
@@ -167,6 +172,7 @@ describe('MoviesController', () => {
         director: 'Peter Jackson',
         gender: 'Fantasia',
         actors: ['Elijah Wood', 'Ian McKellen', 'Sean Astin'],
+        image_url: 'fake_url',
       };
       const expectedMovieDto: MovieDto = {
         id,

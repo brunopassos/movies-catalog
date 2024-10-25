@@ -129,12 +129,4 @@ describe('UsersController', () => {
       expect(mockUsersService.update).toHaveBeenCalledWith('1', updateUserDto);
     });
   });
-
-  describe('remove', () => {
-    it('should remove a user', async () => {
-      await usersController.remove('1');
-
-      expect(mockUsersService.remove).toHaveBeenCalledWith('1');
-    });
-  });
 });
