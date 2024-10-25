@@ -29,7 +29,12 @@ export class CreateMovieDto {
   @IsNotEmpty()
   @IsArray()
   actors: string[];
-
+  @ApiProperty({
+    example:
+      'https://m.media-amazon.com/images/M/MV5BNzIxMDQ2YTctNDY4MC00ZTRhLTk4ODQtMTVlOWY4NTdiYmMwXkEyXkFqcGc@._V1_.jpg',
+  })
+  @IsString()
+  @IsNotEmpty()
   image_url: string;
 }
 
@@ -66,6 +71,12 @@ export class MovieDto {
   @IsNotEmpty()
   @IsArray()
   actors: string[];
+  @ApiProperty({
+    example:
+      'https://m.media-amazon.com/images/M/MV5BNzIxMDQ2YTctNDY4MC00ZTRhLTk4ODQtMTVlOWY4NTdiYmMwXkEyXkFqcGc@._V1_.jpg',
+  })
+  @IsString()
+  @IsNotEmpty()
   image_url: string;
 
   @ApiProperty()
