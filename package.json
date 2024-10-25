@@ -8,6 +8,7 @@
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "start:backend": "cd backend && npm run start:debug",
     "start:frontend": "cd frontend && npm run dev",
+    "setup": "npm install && npm run docker:compose && npm run migration:run",
     "test": "cd backend && jest",
     "test:watch": "cd backend && jest --watch",
     "test:cov": "cd backend && jest --coverage",
